@@ -1,0 +1,73 @@
+% The main function start the simulation 
+% loop through each trial
+function [acts] = simulation_main(exp,inp)
+
+    inp1 = inp{1};
+    inp2 = inp{2};
+    par = exp.model.opt_pars;
+    % handle different urgency signal
+    if exp.urgency == "slow"
+        exp.u0_base = par.slow_u0_base;
+        exp.A = exp.model.opt_pars.slow_A;
+    elseif exp.urgency == "fast"
+        exp.u0_base = exp.model.opt_pars.fast_u0_base;
+        exp.A = exp.model.opt_pars.fast_A;
+    else
+        disp('tell type of urgency');
+    end
+
+    % disp([exp.trial_type,' ',exp.urgency]);
+    
+    % simulation loops through all trials
+    acts = [];
+    choice = [];
+    RT = [];
+    Max_neurons = [];
+
+    model = exp.model;
+    exp.plot_acts_single = exp.plot;
+    for i = 2:1+exp.num_trials%:size(inp1,2)
+        directions = 1;
+        inp = distributed_input(inp1(:,i)',inp2(:,i)',model);
+
+        % it seems this noise is too big
+        exp.phi = (1 + exp.model.opt_pars.*randn(1)); % the initial value of u0 varied across trials
+
+        % main progarm 
+        system = simulate(model.timeSteps,inp,exp);
+        system.direction = directions;
+        commitment_time = system.commit_time;
+        max_neuron = system.max_neuron;
+        acts = [acts,system];
+       
+        % RT = [RT,commitment_time];
+        % Max_neurons = [Max_neurons,max_neuron];
+        % choice = [choice,correct];
+        % disp(['the commitment time is ', num2str(commitment_time)]);
+        % disp(['Correct? ', num2str(choice)]);
+
+        % if mod(i,10) == 0
+        %     fprintf('\rTotal trials: %d | Current trial: %d\n', size(inp1,2), i);
+        % end
+    
+    end
+end
+
+
+
+function new_input = distributed_input(inp1, inp2, model)
+% make a blurred input: the input diffuse into 3 nbhs
+neuron_indices = (1:model.num_neurons)';
+
+distance_matrix = min(abs(neuron_indices - neuron_indices'), ...
+                      model.num_neurons - abs(neuron_indices - neuron_indices'));
+
+input = zeros(model.num_neurons,length(inp1));
+input(model.index_neuron1,:) = inp1;
+input(model.index_neuron2,:) = inp2;
+for i = 1:length(inp1)
+    temp1 = max(0,(-0.1*(distance_matrix).^2 + 1))*input(model.index_neuron1,i);
+    temp2 = max(0,(-0.1*(distance_matrix).^2 + 1))*input(model.index_neuron2,i);
+    new_input(:,i) = temp1(:,model.index_neuron1) + temp2(:,model.index_neuron2);
+end
+end
