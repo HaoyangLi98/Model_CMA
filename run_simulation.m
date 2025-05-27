@@ -21,10 +21,10 @@ exp.model = model;
 
 % simulation related 
 exp.plot = 0;
-exp.num_trials = 50;
+exp.num_trials = 249;
 %%
 % load data
-exp_input = load('/Users/lihaoyang/Desktop/PhD/project/Model_2_CMA/token_trials_modified.mat');
+exp_input = load('./token_trials_modified.mat');
 
 %%
 % simulate three trial types

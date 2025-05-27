@@ -5,8 +5,13 @@ data = load("simulation_result_optimized");
 
 
 %% step 1 2 3
-acts = data.new_result.acts;
-exp = data.new_result.exp;
+
+acts = new_result.acts;
+exp = new_result.exp;
+
+% 
+% acts = data.new_result.acts;
+% exp = data.new_result.exp;
 
 [cell_mat,region_info] = cell_matrix(acts,exp);
 
