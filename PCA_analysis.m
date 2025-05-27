@@ -6,14 +6,14 @@ close all; clc;clear;
 % fast = load("fast_temp.mat");
 % slow = load("slow_temp.mat");
 
-data = load("simulation_result_optimized");
+load("simulation_result_optimized");
 %%
-fast.acts_easy = data.new_result.acts{1};
-fast.acts_ambi = data.new_result.acts{2};
-fast.acts_misl = data.new_result.acts{3};
-slow.acts_easy = data.new_result.acts{4};
-slow.acts_ambi = data.new_result.acts{5};
-slow.acts_misl = data.new_result.acts{6};
+fast.acts_easy = new_result.acts{1};
+fast.acts_ambi = new_result.acts{2};
+fast.acts_misl = new_result.acts{3};
+slow.acts_easy = new_result.acts{4};
+slow.acts_ambi = new_result.acts{5};
+slow.acts_misl = new_result.acts{6};
 
 %% step 1/2 - align trials and split into left and right
 cut_pre = 1500;

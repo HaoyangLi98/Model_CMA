@@ -1,17 +1,13 @@
 %% prepare data
 close all; clc;clear;
 
-data = load("simulation_result_optimized");
+load("simulation_result_optimized");
 
 
 %% step 1 2 3
 
 acts = new_result.acts;
 exp = new_result.exp;
-
-% 
-% acts = data.new_result.acts;
-% exp = data.new_result.exp;
 
 [cell_mat,region_info] = cell_matrix(acts,exp);
 
