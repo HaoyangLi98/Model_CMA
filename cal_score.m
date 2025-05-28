@@ -1,7 +1,8 @@
 % two critera: for each condition, dt within the interval -100 (-600 in total)
 % for each trial, max neuron within the range -300/number of trials 
 function score = cal_score(data)
-score = randn*10;
+% score = randn*10;
+score = 0;
 num_conditions = 6;
 num_trials = data.exp{1,1}.num_trials;
 credit = 300/num_trials;

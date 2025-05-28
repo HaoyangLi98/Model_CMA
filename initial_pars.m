@@ -38,4 +38,4 @@ p.slow_u0_base = 0.3;
 p.slow_A = 0.002;
 p.fast_u0_base = 1.5;
 p.fast_A = 0.003;
-p.phi_noise_w = 0.3;
+% p.phi_noise_w = 0.3;

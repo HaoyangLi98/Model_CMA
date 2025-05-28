@@ -2,7 +2,8 @@
 function output = run_simulation(x)
 initial_pars;
 opt_pars = parArr2struct(x,p);
-
+rng('default');   % reset to modern RNG
+rng(42);
 % model
 model.num_neurons = 90;
 model.angle_step = 360/model.num_neurons;
@@ -21,7 +22,7 @@ exp.model = model;
 
 % simulation related 
 exp.plot = 0;
-exp.num_trials = 249;
+exp.num_trials = 5;
 %%
 % load data
 exp_input = load('./token_trials_modified.mat');

@@ -1,6 +1,5 @@
 *.mat
 *.asv
-*.dat
 *.log
 .DS_Store
 Thumbs.db
