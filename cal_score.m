@@ -30,6 +30,9 @@ for i = 1:num_conditions
     time_diff = abs(avg_commit_time - target_time);
     if time_diff < 200
         score = score - 100;
+    else
+        temp_credit = -(time_diff - 200) * 0.1 + 100;
+        score = score - temp_credit;
     end
 
     % go through each trial
@@ -51,4 +54,5 @@ for i = 1:num_conditions
         % end
     end
 end
+disp(score);
 end

@@ -32,7 +32,7 @@ function [acts] = simulation_main(exp,inp)
 
         % it seems this noise is too big
         % exp.phi = (1 + par.phi_noise_w*randn(1)); % the initial value of u0 varied across trials
-        exp.phi = (1 + 0.3*randn(1)); % the initial value of u0 varied across trials
+        exp.phi = 1; % the initial value of u0 varied across trials
 
         % main progarm 
         system = simulate(model.timeSteps,inp,exp);

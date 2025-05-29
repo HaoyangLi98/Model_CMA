@@ -1,7 +1,8 @@
 % output is used to evaluate, which should includes: decision time...
 function output = run_simulation(x)
-initial_pars;
-opt_pars = parArr2struct(x,p);
+load_pars; % pars inside is the comoplete list for the model
+initial_pars; % pars inside is the pars selected to optimize
+opt_pars = parArr2struct(optpar,p,x);
 rng('default');   % reset to modern RNG
 rng(42);
 % model
@@ -22,7 +23,7 @@ exp.model = model;
 
 % simulation related 
 exp.plot = 0;
-exp.num_trials = 5;
+exp.num_trials = 1;
 %%
 % load data
 exp_input = load('./token_trials_modified.mat');
@@ -72,11 +73,15 @@ output.exp{6} = exp;
 end
 
 %% other functions
-function par = parArr2struct(x,p)
-fields = fieldnames(p);
-par = struct();
+
+% passing the optpars' setting to p
+% x is updated continuesly during the searching algo
+% p is the pars that used for simulation
+function p = parArr2struct(optpar,p,x)
+fields = fieldnames(optpar);
 for i = 1:numel(fields)
-    par.(fields{i}) = x(i);
+    optpar.(fields{i}) = x(i);
+    p.(fields{i}) = optpar.(fields{i});
 end
 end
 

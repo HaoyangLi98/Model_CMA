@@ -38,6 +38,8 @@ x_PMd = [ini.PMd zeros(num_neurons,steps)];
 x_M1 = [ini.M1 zeros(num_neurons,steps)];
 x_GPi = [ini.GPi zeros(num_neurons,steps)];
 
+urgency = zeros(1,steps+1);
+
 % detect commitment
 commit_time = -1;
 max_neuron = -1;
@@ -52,7 +54,7 @@ for i = 1:steps
     
     % urgency grows when token jumps (after experiment start)
     if timeSteps(i,1) < 0
-        u = 0.3*exp.phi;
+        u = exp.u0_base*exp.phi;
     else
         u = U(timeSteps(i,1),exp.A,exp.u0_base,exp.phi);
     end
@@ -85,6 +87,8 @@ for i = 1:steps
     x_M1(:,i+1) = max(0,min(B_M1,x_M1(:,i+1)));
     x_GPi(:,i+1) = max(0,min(B_GPi,x_GPi(:,i+1)));
 
+    % update urgency
+    urgency(:,i+1) = u;
     % when commitment
     if commit == 1 && commit_time == -1
         commit_time = timeSteps(i);
@@ -93,7 +97,7 @@ for i = 1:steps
 end
 
 % store activities during time
-System = struct('x_PFC',x_PFC,'x_PMd',x_PMd,'x_M1',x_M1,'x_GPi',x_GPi,'inp',inp,'commit_time',commit_time,'max_neuron',max_neuron);
+System = struct('x_PFC',x_PFC,'x_PMd',x_PMd,'x_M1',x_M1,'x_GPi',x_GPi,'inp',inp,'commit_time',commit_time,'urgency',urgency,'max_neuron',max_neuron);
 
 
 if exp.plot_acts_single == 1
